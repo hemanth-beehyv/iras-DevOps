@@ -14,6 +14,13 @@ The default installation is intended to be similar to the provided Argo CD [rele
 If you want to avoid including sensitive information unencrypted (clear text) in your version control, make use of the [declarative setup] of Argo CD.
 For instance, rather than adding repositories and their keys in your Helm values, you could deploy [SealedSecrets](https://github.com/bitnami-labs/sealed-secrets) with contents as seen in this [repositories section](https://argo-cd.readthedocs.io/en/stable/operator-manual/declarative-setup/#repositories) or any other secrets manager service (i.e. HashiCorp Vault, AWS/GCP Secrets Manager, etc.).
 
+## Project Setup Notes
+
+This deployment registers `hemanth-beehyv/iras-DevOps` (<https://github.com/hemanth-beehyv/iras-DevOps>) under `configs.repositories` so Argo CD can source Applications from it.
+
+* **Visibility:** this repo is **public**, so no `username`/`password` credentials are required in `configs.repositories`. Commented-out `username`/`password` fields are kept next to the entry in `values.yaml` in case the repo is ever made private.
+* See [pre-req.md](pre-req.md) for the one-time cluster setup (e.g. the `helm-secrets-private-keys` Secret) needed before installing this chart.
+
 ## High Availability
 
 This chart installs the non-HA version of Argo CD by default. If you want to run Argo CD in HA mode, you can use one of the example values in the next sections.
