@@ -91,7 +91,7 @@ Create the kube-vip DaemonSet — EDIT the two values `address`
                 - name: address
                   value: "192.168.0.100"
                 - name: vip_interface
-                  value: "eth0"
+                  value: "ens160"
                 - name: port
                   value: "6443"
                 - name: cp_enable

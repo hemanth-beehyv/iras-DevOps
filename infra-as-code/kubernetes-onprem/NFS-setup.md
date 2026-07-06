@@ -84,6 +84,27 @@ To persist across reboots, add to `/etc/fstab`:
 
     192.168.0.x:/mnt/nfs01/irasNFS  /mnt/irasNFS  nfs  defaults  0  0
 
+## Step 4 — Install the NFS CSI driver in Kubernetes
+
+Once the NFS server/export above is up, install the [csi-driver-nfs](../../deploy-as-code/helm/charts/backbone-services/csi-driver-nfs)
+chart so the cluster can dynamically provision PVs against the `irasNFS` share.
+
+Chart path: `deploy-as-code/helm/charts/backbone-services/csi-driver-nfs`
+
+    cd deploy-as-code/helm/charts/backbone-services/csi-driver-nfs
+    helm install csi-driver-nfs . \
+      --namespace kube-system \
+      --set storageClass.create=true \
+      --set storageClass.name=nfs-csi \
+      --set-string storageClass.annotations."storageclass\.kubernetes\.io/is-default-class"="true" \
+      --set storageClass.parameters.server=192.168.0.87 \
+      --set storageClass.parameters.share=/mnt/nfs01/irasNFS \
+      --set storageClass.reclaimPolicy=Retain
+
+This creates the `nfs-csi` StorageClass (set as the cluster default) pointing at
+the `192.168.0.87:/mnt/nfs01/irasNFS` export, with `Retain` as the reclaim policy
+so PVs aren't deleted when their PVC is removed.
+
 ## Troubleshooting
 
 | Symptom                              | Check                                                        |
