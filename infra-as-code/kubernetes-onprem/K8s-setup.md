@@ -15,6 +15,7 @@ All commands below are run directly on the nodes — no extra scripts needed.
 | worker-1 | agent                      | 192.168.0.83 |
 | worker-2 | agent                      | 192.168.0.84 |
 | worker-3 | agent                      | 192.168.0.85 |
+| digitproxy01 | agent (public/edge node) | 192.168.0.86 |
 
 Replace the IPs with your own. The VIP must be a FREE, unused IP on the
 same subnet as the servers, excluded from your DHCP range.
@@ -187,6 +188,25 @@ Power that server off, then from your laptop:
 A few seconds of connection errors, then it recovers — the VIP has moved
 to a surviving server. Power the dead server back on; it rejoins
 automatically.
+
+## Step 8 — Taint and label the public/edge node
+
+We use MetalLB to hand out a LoadBalancer IP on our public network, and we
+want that traffic (and the ingress-nginx controller that receives it) to
+land on one dedicated, internet-facing node instead of any random worker.
+Do this for the node that's actually reachable from the public network —
+for our dev cluster that's `digitproxy01` (192.168.0.86):
+
+    kubectl taint node digitproxy01 node=public:NoSchedule
+    kubectl label node digitproxy01 node=public
+
+- The **taint** (`NoSchedule`) keeps normal workloads off this node by
+  default, since it's directly exposed to public traffic.
+- The **label** (`node=public`) is what metallb's `controller`/`speaker`
+  and ingress-nginx's `controller` match on via `nodeSelector`, combined
+  with a matching `tolerations` entry so they're still allowed to schedule
+  there despite the taint (see `values.yaml` in the `metallb` and
+  `ingress-nginx` backbone-services charts).
 
 ## Troubleshooting
 
