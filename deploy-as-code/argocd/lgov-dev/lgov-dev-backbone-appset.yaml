@@ -40,8 +40,8 @@ spec:
             # https://github.com/jkroepke/helm-secrets/wiki/ArgoCD-Integration
             valueFiles:
               - values.yaml
-              - environments/lgov-dev.yaml
-              - secrets://../../../environments/lgov-dev-secrets.yaml
+              - ../../../environments/lgov-dev.yaml
+              - secrets+age-import://../../../environments/lgov-dev-secrets.yaml
         - repoURL: https://github.com/hemanth-beehyv/iras-DevOps
           targetRevision: master
           ref: values
