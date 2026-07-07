@@ -42,7 +42,7 @@ spec:
               - values.yaml
               - ../../../environments/lgov-dev.yaml
               # secrets+age-import://<key-volume-mount>/<key-name>.txt?<relative/path/to/the/encrypted/secrets.yaml>
-              - secrets://deploy-as-code/helm/environments/lgov-dev-secrets.yaml
+              - secrets://../../../environments/lgov-dev-secrets.yaml
         - repoURL: https://github.com/hemanth-beehyv/iras-DevOps
           targetRevision: master
           ref: values
