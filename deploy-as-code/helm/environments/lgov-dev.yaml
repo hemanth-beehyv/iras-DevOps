@@ -13,9 +13,9 @@ cluster-configs:
         egov-config:
             namespace: [ egov, monitoring ]
             data:
-                db-host: "<db_host>:5432" ## Add db-host name eg: egov-demo.database.azure.co
+                db-host: "postgres.egov:5432" ## Add db-host name eg: egov-demo.database.azure.co
                 db-name: "digitgodb" ## Add db-name
-                db-url: "jdbc:postgresql://<db_host>:5432/<dbname>" ## example: jdbc:postgresql://egov-demo.postgres.database.azure.com:5432/egov_demo
+                db-url: "jdbc:postgresql://postgres.egov:5432/iras_dev" ## example: jdbc:postgresql://egov-demo.postgres.database.azure.com:5432/egov_demo
                 domain: lgov-dev.techno-associates.live ## Add your Domain Name    
                 egov-services-fqdn-name: https://lgov-dev.techno-associates.live/ ## Add your Domain Name
                 
@@ -143,6 +143,9 @@ cluster-configs:
                 pgr-services: "http://pgr-services.egov:8080/"
                 birth-death-services: "http://birth-death-services.egov:8080/"
                 egov-pdf: "http://egov-pdf.egov:8080/"
+
+postgresDatabase: "iras_dev"
+
 employee:
   dashboard-url: "https://dashboard-pbuat.egovernments.org/s/w---s/app/kibana#/dashboard/4e687470-f3c7-11e8-8d09-b151e2b1cf8e?embed=true&_g=(refreshInterval%3A(pause%3A!f%2Cvalue%3A300000)%2Ctime%3A(from%3Anow-15m%2Cmode%3Aquick%2Cto%3Anow))"
   custom-js-injection: |

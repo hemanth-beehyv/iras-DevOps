@@ -8,6 +8,7 @@ image:
   tag: "14"
 replicas: "1"
 httpPort: 5432
+postgresDatabase: egov_ms      
 
 resources: |
   requests:
@@ -28,7 +29,7 @@ env: |
         name: db
         key: username
   - name: POSTGRES_DB
-    value: {{ default "" .Values.postgresDatabase | quote }}
+    value: {{ index .Values "postgresDatabase" | quote }}
 extraVolumeMounts: |
   - name: postgres-volume
     mountPath: /var/lib/postgresql/data
@@ -38,4 +39,3 @@ extraVolumes: |
       claimName: pvc-postgres
 
 
-postgresDatabase: egov_ms      
