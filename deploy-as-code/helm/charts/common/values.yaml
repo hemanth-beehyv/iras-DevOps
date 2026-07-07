@@ -24,6 +24,8 @@ ingress:
       nginx.ingress.kubernetes.io/lua-resty-waf-allow-unknown-content-types: "true"
       nginx.ingress.kubernetes.io/lua-resty-waf-process-multipart-body: "false"              
 
+disableAnnotationTimestamp: true
+
 image:
   pullPolicy: IfNotPresent   
 
