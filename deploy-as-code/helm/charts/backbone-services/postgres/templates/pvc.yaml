@@ -2,9 +2,15 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: pvc-postgres
-  namespace: monitoring
+{{- if .Values.global.namespace }}
+  namespace: {{ .Values.global.namespace }}
+{{- else }}
+  namespace: {{ .Values.namespace }}
+{{- end }}
   labels:
     type: local
+    app: {{ .Values.labels.app }}
+    group: {{ .Values.labels.group }}
 spec:
   storageClassName: nfs-csi
   accessModes:
