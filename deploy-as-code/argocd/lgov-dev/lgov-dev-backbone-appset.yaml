@@ -40,9 +40,9 @@ spec:
             # https://github.com/jkroepke/helm-secrets/wiki/ArgoCD-Integration
             valueFiles:
               - values.yaml
-              - ../../../environments/lgov-dev.yaml
+              - deploy-as-code/helm/environments/lgov-dev.yaml
               # secrets+age-import://<key-volume-mount>/<key-name>.txt?<relative/path/to/the/encrypted/secrets.yaml>
-              - secrets+age-import:/helm-secrets-private-keys/keys.txt?//../../../environments/lgov-dev-secrets.yaml
+              - secrets://deploy-as-code/helm/environments/lgov-dev-secrets.yaml
         - repoURL: https://github.com/hemanth-beehyv/iras-DevOps
           targetRevision: master
           ref: values
