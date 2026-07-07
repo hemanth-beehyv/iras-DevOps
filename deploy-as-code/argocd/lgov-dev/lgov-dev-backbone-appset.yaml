@@ -1,0 +1,52 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: lgov-dev-backbone
+  namespace: argocd
+spec:
+  generators:
+    - list:
+        elements:
+          - service: cert-manager
+          - service: elasticsearch-data
+          - service: elasticsearch-master
+          - service: ingress-nginx
+          - service: kafka-kraft
+          - service: kibana
+          # - service: minio
+          # - service: novu
+          # - service: oauth2-proxy
+          # - service: pgadmin
+          # - service: playground
+          - service: postgres
+          # - service: prometheus-blackbox-exporter
+          # - service: prometheus-kafka-exporter
+          # - service: prometheus-postgres-exporter
+          # - service: redis
+  template:
+    metadata:
+      name: "{{service}}"
+    spec:
+      project: default
+      sources:
+        - repoURL: https://github.com/hemanth-beehyv/iras-DevOps
+          targetRevision: master
+          path: "deploy-as-code/helm/charts/backbone-services/{{service}}"
+          helm:
+            # Chart defaults from the service's own values.yaml, overridden by
+            # the environment values below (later files win).
+            valueFiles:
+              - $values/deploy-as-code/helm/environments/egov-demo.yaml
+              - $values/deploy-as-code/helm/environments/egov-demo-secrets.yaml
+        - repoURL: https://github.com/hemanth-beehyv/iras-DevOps
+          targetRevision: master
+          ref: values
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: backbone
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true

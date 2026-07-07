@@ -110,6 +110,7 @@ networkHost: "0.0.0.0"
 
 volumeClaimTemplate:
   accessModes: [ "ReadWriteOnce" ]
+  storageClassName: nfs-csi
   resources:
     requests:
       storage: 25Gi

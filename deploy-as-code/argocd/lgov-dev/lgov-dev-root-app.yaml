@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: lgov-dev-root
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/hemanth-beehyv/iras-DevOps
+    targetRevision: master
+    path: deploy-as-code/argocd/lgov-dev
+    directory:
+      recurse: true
+      exclude: "lgov-dev-root-app.yaml"
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argocd
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

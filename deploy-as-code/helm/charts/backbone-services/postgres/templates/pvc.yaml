@@ -1,4 +1,3 @@
-{{- if eq .Values.global.setup "quickstart" }} 
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -6,11 +5,10 @@ metadata:
   namespace: monitoring
   labels:
     type: local
-spec: 
-  storageClassName: manual
+spec:
+  storageClassName: nfs-csi
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
       storage: 1Gi
-{{- end }}

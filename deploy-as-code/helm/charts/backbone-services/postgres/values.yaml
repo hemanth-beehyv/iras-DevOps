@@ -34,10 +34,8 @@ extraVolumeMounts: |
     mountPath: /var/lib/postgresql/data
 extraVolumes: |
   - name: postgres-volume
-  {{- if eq .Values.global.setup "quickstart" }} 
     persistentVolumeClaim:
       claimName: pvc-postgres
-  {{- end}}    
 
 
 postgresDatabase: egov_ms      
