@@ -34,10 +34,13 @@ spec:
           path: "deploy-as-code/helm/charts/backbone-services/{{service}}"
           helm:
             # Chart defaults from the service's own values.yaml, overridden by
-            # the environment values below (later files win).
+            # the environment values below (later files win). The secrets file
+            # is SOPS/age-encrypted and decrypted in-place by the repo-server's
+            # helm-secrets plugin via the secrets+age-import scheme.
+            # https://github.com/jkroepke/helm-secrets/wiki/ArgoCD-Integration
             valueFiles:
-              - $values/deploy-as-code/helm/environments/egov-demo.yaml
-              - $values/deploy-as-code/helm/environments/egov-demo-secrets.yaml
+              - $values/deploy-as-code/helm/environments/lgov-dev.yaml
+              - secrets+age-import:///helm-secrets-private-keys/keys.txt?../../../environments/lgov-dev-secrets.yaml
         - repoURL: https://github.com/hemanth-beehyv/iras-DevOps
           targetRevision: master
           ref: values
