@@ -26,6 +26,11 @@ spec:
   destination:
     server: https://kubernetes.default.svc
     namespace: backbone
+  ignoreDifferences:
+    - group: apps
+      kind: Deployment
+      jsonPointers:
+        - /spec/replicas
   syncPolicy:
     automated:
       prune: true
