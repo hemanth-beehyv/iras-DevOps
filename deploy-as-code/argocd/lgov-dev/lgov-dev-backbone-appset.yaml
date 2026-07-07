@@ -39,7 +39,8 @@ spec:
             # helm-secrets plugin via the secrets+age-import scheme.
             # https://github.com/jkroepke/helm-secrets/wiki/ArgoCD-Integration
             valueFiles:
-              - $values/deploy-as-code/helm/environments/lgov-dev.yaml
+              - values.yaml
+              - ../../../environments/lgov-dev.yaml
               - secrets+age-import:///helm-secrets-private-keys/keys.txt?../../../environments/lgov-dev-secrets.yaml
         - repoURL: https://github.com/hemanth-beehyv/iras-DevOps
           targetRevision: master
