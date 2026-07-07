@@ -23,6 +23,7 @@ spec:
           # - service: prometheus-kafka-exporter
           # - service: prometheus-postgres-exporter
           # - service: redis
+          - service: metallb
   template:
     metadata:
       name: "{{service}}"

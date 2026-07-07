@@ -224,8 +224,13 @@ controller:
     # limits:
       # cpu: 100m
       # memory: 100Mi
-  nodeSelector: {}
-  tolerations: []
+  nodeSelector:
+    node: public
+  tolerations:
+    - key: "node"
+      operator: "Equal"
+      value: "public"
+      effect: "NoSchedule"
   priorityClassName: ""
   runtimeClassName: ""
   affinity: {}
@@ -299,8 +304,13 @@ speaker:
     # limits:
       # cpu: 100m
       # memory: 100Mi
-  nodeSelector: {}
-  tolerations: []
+  nodeSelector:
+    node: public
+  tolerations:
+    - key: "node"
+      operator: "Equal"
+      value: "public"
+      effect: "NoSchedule"
   priorityClassName: ""
   affinity: {}
   ## Selects which runtime class will be used by the pod.
