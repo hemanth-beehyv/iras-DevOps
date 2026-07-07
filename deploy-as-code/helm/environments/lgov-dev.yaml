@@ -14,7 +14,7 @@ cluster-configs:
             namespace: [ egov, monitoring ]
             data:
                 db-host: "postgres.egov:5432" ## Add db-host name eg: egov-demo.database.azure.co
-                db-name: "digitgodb" ## Add db-name
+                db-name: "iras_dev" ## Add db-name
                 db-url: "jdbc:postgresql://postgres.egov:5432/iras_dev" ## example: jdbc:postgresql://egov-demo.postgres.database.azure.com:5432/egov_demo
                 domain: lgov-dev.techno-associates.live ## Add your Domain Name    
                 egov-services-fqdn-name: https://lgov-dev.techno-associates.live/ ## Add your Domain Name
