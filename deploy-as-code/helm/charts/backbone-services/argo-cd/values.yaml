@@ -446,6 +446,10 @@ configs:
     # (e.g.)
     # otlp.address: ''
 
+    # Repos we sync (e.g. iras-DevOps) carry submodules pointing at repos we
+    # don't have access to; none of our manifests need submodule content.
+    reposerver.enable.git.submodule: false
+
   # Argo CD RBAC policy configuration
   ## Ref: https://github.com/argoproj/argo-cd/blob/master/docs/operator-manual/rbac.md
   rbac:
