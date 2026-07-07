@@ -20,6 +20,62 @@ All commands below are run directly on the nodes — no extra scripts needed.
 Replace the IPs with your own. The VIP must be a FREE, unused IP on the
 same subnet as the servers, excluded from your DHCP range.
 
+## Architecture — node roles & traffic flow
+
+There are two separate concerns here, handled by two different nodes/IPs —
+don't confuse them:
+
+- **VIP (192.168.0.100, kube-vip)** — control-plane HA only. This is how
+  `kubectl`/`kubelet`/the API server are reached; it floats across
+  server-1..3 via ARP. It has nothing to do with application traffic.
+- **digitproxy01 (192.168.0.86)** — the public data-plane entry point.
+  It's the only node with a route to/from the public network, so it's
+  tainted/labeled (`node=public`, see Step 8) and dedicated to running
+  MetalLB's speaker + the ingress-nginx controller, which are the only
+  things that need to be reachable from outside.
+
+| Node                    | IP            | Role                                    | Purpose                                                                 |
+|-------------------------|---------------|------------------------------------------|--------------------------------------------------------------------------|
+| — (VIP, virtual)        | 192.168.0.100 | control-plane HA endpoint                 | kube-vip ARP-floats across server-1..3; all API/kubectl traffic targets this, never an individual server IP |
+| server-1                | 192.168.0.80  | master (bootstrap)                        | control-plane + etcd (quorum member); runs kube-vip                     |
+| server-2                | 192.168.0.81  | master                                    | control-plane + etcd (quorum member); runs kube-vip                     |
+| server-3                | 192.168.0.82  | master                                    | control-plane + etcd (quorum member); runs kube-vip                     |
+| worker-1 / -2 / -3      | .83 / .84 / .85 | agent                                    | run application/backbone-service pods; internal-only, no public route   |
+| digitproxy01            | 192.168.0.86  | agent, public/edge (tainted `node=public`) | only node reachable from the public network; runs metallb `speaker` + `ingress-nginx` controller so all external traffic enters here |
+
+Traffic flow, external request in:
+
+```mermaid
+flowchart TD
+    internet["Internet / public network"]
+
+    subgraph edge["digitproxy01 (192.168.0.86) — tainted node=public:NoSchedule"]
+        speaker["metallb-speaker<br/>announces the LB IP via ARP"]
+        nginx["ingress-nginx-controller<br/>terminates connection,<br/>matches Ingress host/path rules"]
+        speaker --> nginx
+    end
+
+    subgraph workers["worker-1 / worker-2 / worker-3"]
+        pods["application / backbone-service pods<br/>(scheduled on any of these — pod network spans all)"]
+    end
+
+    subgraph controlplane["server-1 / server-2 / server-3"]
+        vip["VIP 192.168.0.100 (kube-vip)"]
+        api["control-plane + etcd"]
+        vip --> api
+    end
+
+    internet -->|"request to the MetalLB public IP"| speaker
+    nginx -->|"proxied to the matching backend Service (ClusterIP),<br/>over the flannel VXLAN pod network"| pods
+    edge -.->|"kubelet / API traffic (separate from app traffic)"| vip
+    workers -.->|"kubelet / API traffic"| vip
+```
+
+Both `metallb` (`controller`+`speaker`) and `ingress-nginx` (`controller`)
+have matching `nodeSelector: {node: public}` + `tolerations` in their
+`values.yaml` under `deploy-as-code/helm/charts/backbone-services/`, so
+they land on `digitproxy01` and nowhere else.
+
 ## Step 0 — Prepare all 6 nodes
 
 On EVERY node:
