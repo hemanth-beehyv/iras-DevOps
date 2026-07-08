@@ -43,7 +43,7 @@ crds:
 global:
   # -- Default domain used by all components
   ## Used for ingresses, certificates, SSO, notifications, etc.
-  domain: argocd.example.com
+  domain: lgov-dev.techno-associates.live
 
   # -- Runtime class name for all components
   runtimeClassName: ""
@@ -195,6 +195,9 @@ configs:
 
     # -- Annotations to be added to argocd-cm configmap
     annotations: {}
+
+    # -- Argo CD's externally facing base URL
+    url: https://lgov-dev.techno-associates.live/argocd
 
     # -- The name of tracking label used by Argo CD for resource pruning
     application.instanceLabelKey: argocd.argoproj.io/instance
@@ -449,6 +452,11 @@ configs:
     # Repos we sync (e.g. iras-DevOps) carry submodules pointing at repos we
     # don't have access to; none of our manifests need submodule content.
     reposerver.enable.git.submodule: false
+
+    # Serve the UI/API under the /argocd path, since the ingress exposes
+    # Argo CD on a shared domain at that subpath.
+    server.rootpath: /argocd
+    server.basehref: /argocd
 
   # Argo CD RBAC policy configuration
   ## Ref: https://github.com/argoproj/argo-cd/blob/master/docs/operator-manual/rbac.md
@@ -2574,7 +2582,7 @@ server:
   # Argo CD server ingress configuration
   ingress:
     # -- Enable an ingress resource for the Argo CD server
-    enabled: false
+    enabled: true
     # -- Specific implementation for ingress controller. One of `generic`, `aws` or `gke`
     ## Additional configuration might be required in related configuration sections
     controller: generic
@@ -2582,19 +2590,21 @@ server:
     labels: {}
     # -- Additional ingress annotations
     ## Ref: https://argo-cd.readthedocs.io/en/stable/operator-manual/ingress/#option-1-ssl-passthrough
-    annotations: {}
+    annotations:
+      kubernetes.io/ingress.class: nginx
+      nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
       # nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
       # nginx.ingress.kubernetes.io/ssl-passthrough: "true"
 
     # -- Defines which ingress controller will implement the resource
-    ingressClassName: ""
+    ingressClassName: nginx
 
     # -- Argo CD server hostname
     # @default -- `""` (defaults to global.domain)
-    hostname: ""
+    hostname: lgov-dev.techno-associates.live
 
     # -- The path to Argo CD server
-    path: /
+    path: /argocd
 
     # -- Ingress path type. One of `Exact`, `Prefix` or `ImplementationSpecific`
     pathType: Prefix
@@ -2602,6 +2612,11 @@ server:
     # -- Enable TLS configuration for the hostname defined at `server.ingress.hostname`
     ## TLS certificate will be retrieved from a TLS secret `argocd-server-tls`
     ## You can create this secret via `certificate` or `certificateSecret` option
+    ## Left disabled: `lgov-dev.techno-associates.live` already terminates TLS via
+    ## the shared `lgov-dev.techno-associates.live-tls-certs` secret from other
+    ## Ingress objects on this host (root-ingress, kibana, minio, ...). Declaring
+    ## a second, different secret for the same host here made nginx-ingress fall
+    ## back to its default self-signed certificate for the whole hostname.
     tls: false
 
     # -- The list of additional hostnames to be covered by ingress record
@@ -3132,7 +3147,7 @@ repoServer:
         - name: VALS_VERSION
           value: "0.44.3"
         - name: SOPS_VERSION
-          value: "3.13.2"
+          value: "3.10.2"
         - name: AGE_VERSION
           value: "1.3.1"
         - name: HELM_PLUGINS
