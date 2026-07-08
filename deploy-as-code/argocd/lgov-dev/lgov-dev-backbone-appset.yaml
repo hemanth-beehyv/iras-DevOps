@@ -13,7 +13,7 @@ spec:
           - service: ingress-nginx
           - service: kafka-kraft
           - service: kibana
-          # - service: minio
+          - service: minio
           # - service: novu
           # - service: oauth2-proxy
           # - service: pgadmin
