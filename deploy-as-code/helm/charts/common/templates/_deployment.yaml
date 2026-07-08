@@ -87,10 +87,10 @@ spec:
       {{- if .Values.initContainers.dbMigration.enabled }}
       {{ with .Values.initContainers.dbMigration}}
       - name: "db-migration"
-        image: {{ template "common.image" (dict "Values" $.Values "repository" .image.repository "tag" .image.tag) }}
-        imagePullPolicy: {{ .image.pullPolicy }} 
-      {{- end }}    
-        {{- if .Values.initContainers.dbMigration.env }}               
+        image: {{ template "common.image" (dict "Values" $.Values "repository" .image.repository "tag" $.Values.image.tag) }}
+        imagePullPolicy: {{ .image.pullPolicy }}
+      {{- end }}
+        {{- if .Values.initContainers.dbMigration.env }}
         env: 
           {{- tpl  .Values.initContainers.dbMigration.env . | nindent 12 }}
         {{- end }}
