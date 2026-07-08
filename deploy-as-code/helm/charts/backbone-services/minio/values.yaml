@@ -203,8 +203,8 @@ ingress:
   ingressClassName: ~
   labels: {}
     # node-role.kubernetes.io/ingress: platform
-  annotations: {}
-    # kubernetes.io/ingress.class: nginx
+  annotations:
+    kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
     # kubernetes.io/ingress.allow-http: "false"
     # kubernetes.io/ingress.global-static-ip-name: ""
