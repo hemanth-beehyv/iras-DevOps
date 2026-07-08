@@ -177,6 +177,9 @@ dss-dashboard:
     tag: "v1.6.0-c5fd6f7971-3"
 
 egov-url-shortening:
+  image:
+    repository: "egov-url-shortening"
+    tag: "base-docker-upgrade-f2da0a7"
   heap: "-Xmx256m -Xms256m"
   memory_limits: 512Mi
   egov-url-shortner-endpoint: "/eus/shortener"
@@ -184,7 +187,10 @@ egov-url-shortening:
   hashids-min-length: "2"
   
 egov-filestore:
-  memory_limits: "512Mi" 
+  image:
+    repository: "egov-filestore"
+    tag: "base-docker-upgrade-f2da0a7"
+  memory_limits: "512Mi"
   volume: /opt/eGov/filestore
   is-bucket-fixed: "true"
   minio.url : "http://minio.backbone:9000/"
@@ -198,17 +204,26 @@ egov-filestore:
   fixed-bucketname: unified-dev-bucket-s3  ## Add filestore bucket name
 
 egov-enc-service:
+  image:
+    repository: "egov-enc-service"
+    tag: "central-instance-12bfc75"
   heap: "-Xmx256m -Xms256m"
   memory_limits: 512Mi
   state-level-tenant-id: "pb"
 
 egov-idgen:
+  image:
+    repository: "egov-idgen"
+    tag: "2.9-LTS-IDgen-mdmsDatacache-ec7d017"
   idformat-from-mdms: "true"
   java-args: -Dspring.profiles.active=monitoring
   heap: "-Xmx192m -Xms192m"
   autocreate-new-seq: "true"
 
 egov-localization:
+  image:
+    repository: "egov-localization"
+    tag: "base-docker-upgrade-f2da0a7"
   replicas: 1
   heap: "-Xmx256m -Xms256m"
   memory_limits: 512Mi
@@ -217,6 +232,9 @@ egov-location:
   memory_limits: 512Mi
 
 egov-notification-sms:
+  image:
+    repository: "egov-notification-sms"
+    tag: "master-e22c7c5"
   sms-provider-url: "sms provider url" ## Add sms provider url
   sms.provider.class: "Generic"
   sms.provider.contentType:  "application/x-www-form-urlencoded"
@@ -237,6 +255,9 @@ postgres:
   tag: "14"
 
 egov-user:
+  image:
+    repository: "egov-user"
+    tag: "user-bulk-upgrade-960226f"
   heap: "-Xmx256m -Xms256m"
   memory_limits: 512Mi
   otp-validation: "true"
@@ -279,6 +300,9 @@ ws-services:
   is-external-workflow-enabled: "true"
 
 bpa-services:
+  image:
+    repository: "bpa-services"
+    tag: "nitish-bpa-fix-95748de9"
   memory_limits: 384Mi
   java-args: -Dspring.profiles.active=monitoring
   java-debug: true
@@ -286,6 +310,9 @@ bpa-services:
   egov.idgen.bpa.applicationNum.format: PB-BP-[cy:yyyy-MM-dd]-[SEQ_EG_BP_APN]
 
 bpa-calculator:
+  image:
+    repository: "bpa-calculator"
+    tag: "v1.2.0-ca98ee32-8"
   memory_limits: 384Mi
   java-args: -Dspring.profiles.active=monitoring
   java-debug: true
@@ -296,11 +323,17 @@ sw-services:
   is-external-workflow-enabled: "true" 
 
 egov-pg-service:
-  axis: true  
+  image:
+    repository: "egov-pg-service"
+    tag: "maven-jdk21-9f83afb"
+  axis: true
   egov-pg-reconciliation-system-user-uuid: "db4fe8ed-c0e0-4c2a-829b-72296d8d156f"
 
 # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 egov-mdms-service:
+  image:
+    repository: "egov-mdms-service"
+    tag: "latest"
   memory_limits: "512Mi"
   replicas: 1
   images:
@@ -315,6 +348,9 @@ egov-mdms-service:
   java-args: -Dspring.profiles.active=monitoring
 
 egov-indexer:
+  image:
+    repository: "egov-indexer"
+    tag: "base-docker-upgrade-f2da0a7"
   heap: "-Xmx512m -Xms512m"
   memory_limits: "768Mi"
   initContainers:
@@ -324,6 +360,9 @@ egov-indexer:
   egov-indexer-yaml-repo-path: "file:///work-dir/configs/fsm/egov-indexer/egov-vehicle.yaml,file:///work-dir/configs/fsm/egov-indexer/egov-vendor.yaml,file:///work-dir/configs/fsm/egov-indexer/egov-fsm.yml,file:///work-dir/configs/egov-indexer/privacy-audit.yaml,file:///work-dir/configs/egov-indexer/billingservices-indexer.yml,file:///work-dir/configs/egov-indexer/collection-indexer.yml,file:///work-dir/configs/egov-indexer/egov-telemetry-indexer.yml,file:///work-dir/configs/egov-indexer/egov-uploader-indexer.yml,file:///work-dir/configs/egov-indexer/error-queue.yml,file:///work-dir/configs/egov-indexer/finance-rolloutadotpion-indexer.yml,file:///work-dir/configs/egov-indexer/payment-indexer.yml,file:///work-dir/configs/egov-indexer/pgr-services.yml,file:///work-dir/configs/egov-indexer/rainmaker-pgr-indexer.yml,file:///work-dir/configs/egov-indexer/rainmaker-pt-indexer.yml,file:///work-dir/configs/egov-indexer/rainmaker-tl-indexer.yml,file:///work-dir/configs/egov-indexer/chatbot-telemetry.yaml,file:///work-dir/configs/egov-indexer/water-service.yml,file:///work-dir/configs/egov-indexer/water-services-meter.yml,file:///work-dir/configs/egov-indexer/sewerage-service.yml,file:///work-dir/configs/egov-indexer/property-services.yml,file:///work-dir/configs/egov-indexer/chatbot-telemetry-v2.yaml,file:///work-dir/configs/egov-indexer/egov-vehicle.yaml,file:///work-dir/configs/egov-indexer/egov-vendor.yaml,file:///work-dir/configs/egov-indexer/egov-url-shortening-indexer.yaml,file:///work-dir/configs/egov-indexer/fire-noc-service.yml,file:///work-dir/configs/egov-indexer/egov-echallan.yml,file:///work-dir/configs/egov-indexer/egov-bpa-indexer.yml,file:///work-dir/configs/egov-indexer/edcr-indexer.yml,file:///work-dir/configs/egov-indexer/rainmaker-birth-indexer.yml,file:///work-dir/configs/egov-indexer/rainmaker-death-indexer.yml,file:///work-dir/configs/egov-indexer/ws-event-indexer.yml,file:///work-dir/configs/egov-indexer/egov-error-queue-indexer.yml,file:///work-dir/configs/egov-indexer/citizen-feedback-indexer.yml,file:///work-dir/configs/egov-indexer/egov-fsm.yml,file:///work-dir/configs/egov-indexer/fsm-inbox-indexer.yml,file:///work-dir/configs/works/egov-indexer/contractservices-indexer.yml,file:///work-dir/configs/works/egov-indexer/estimateservices-indexer.yml,file:///work-dir/configs/works/egov-indexer/expensebill-indexer.yml,file:///work-dir/configs/works/egov-indexer/individual-indexer.yml,file:///work-dir/configs/works/egov-indexer/musterservices-indexer.yml,file:///work-dir/configs/works/egov-indexer/organisationservices-indexer.yml,file:///work-dir/configs/works/egov-indexer/project-indexer.yml,file:///work-dir/configs/egov-indexer/product-indexer.yml,file:///work-dir/configs/egov-indexer/individual-indexer.yml,file:///work-dir/configs/egov-indexer/household-indexer.yml,file:///work-dir/configs/egov-indexer/project-task-indexer.yml,file:///work-dir/configs/egov-indexer/stock-indexer.yml,file:///work-dir/configs/egov-indexer/facility-indexer.yml,file:///work-dir/configs/egov-indexer/project-staff-indexer.yml,file:///work-dir/configs/egov-indexer/service-request-indexer.yml,file:///work-dir/configs/works/egov-indexer/measurement-indexer.yml,file:///work-dir/configs/works/egov-indexer/ifms-pi-indexer.yml,file:///work-dir/configs/works/egov-indexer/expensepayment-indexer.yml,file:///work-dir/configs/egov-indexer/egov-pqm-service.yml,file:///work-dir/configs/egov-indexer/pqm-service-indexer.yml,file:///work-dir/configs/egov-indexer/pqm-anomaly-finder-indexer.yml,file:///work-dir/configs/egov-indexer/sample.yml,file:///work-dir/configs/egov-indexer/pgr-services.yml"
 
 egov-persister:
+  image:
+    repository: "egov-persister"
+    tag: "master-persister-changes-2.0-a23744a"
   replicas: 1
   heap: "-Xmx256m -Xms256m"
   memory_limits: 512Mi
@@ -336,6 +375,9 @@ egov-persister:
       branch: "UNIFIED-DEV" 
       
 audit-service:
+  image:
+    repository: "audit-service"
+    tag: "base-docker-upgrade-f2da0a7"
   persist-yml-path: "https://raw.githubusercontent.com/egovernments/configs/UNIFIED-DEV/works/egov-persister/attendance-service-persister.yml,https://raw.githubusercontent.com/egovernments/configs/UNIFIED-DEV/works/egov-persister/muster-service-persister.yml,https://raw.githubusercontent.com/egovernments/configs/UNIFIED-DEV/works/egov-persister/estimate-service.yml,https://raw.githubusercontent.com/egovernments/configs/UNIFIED-DEV/works/egov-persister/contract-service-persister.yml,https://raw.githubusercontent.com/egovernments/configs/UNIFIED-DEV/works/egov-persister/bankaccounts-persister.yml,https://raw.githubusercontent.com/egovernments/configs/UNIFIED-DEV/works/egov-persister/expense-bill-payment-persister.yaml"
   initContainers:
     gitSync:
@@ -386,6 +428,9 @@ national-dashboard-ingest:
   module-allowed-groupby-fields-mapping: '{"PT":{"financialYear","usageCategory"},"WS":{"connectionType","channelType","usageType","paymentChannelType","taxHeads","meterType","duration"},"FIRENOC":{"applicationType","department","paymentMode","type","usageType"},"OBPS":{"paymentMode","riskType","occupancyType","subOccupancyType"},"PGR":{"status","channel","department","category"},"TL":{"tradeType","status"},"MCOLLECT":{"paymentMode","status","category","challanStatus"},"COMMON":{"serviceModuleCode"},"BIRTH":{"channel","gender","boundary"},"DEATH":{"channel","gender","boundary","age"}}'
 
 report:
+  image:
+    repository: "report"
+    tag: "master-49ad96d7"
   heap: "-Xmx512m -Xms512m"
   tracing-enabled: "true"
   spring-datasource-tomcat-max-active: 5
@@ -396,6 +441,9 @@ report:
   report-locationsfile-path: "file:///work-dir/configs/reports/reportFileLocationsv1.txt"
 
 pdf-service:
+  image:
+    repository: "pdf-service"
+    tag: "central-instance-pdf-7b3064f"
   initContainers:
     gitSync:
       repo: "git@github.com:egovernments/configs"     ##### Change repo url with Your fork Repo url
@@ -415,6 +463,9 @@ egov-custom-consumer:
   erp-host: "https://mohali-qa.egovernments.org/"
 
 egov-apportion-service:
+  image:
+    repository: "egov-apportion-service"
+    tag: "digit3-apportion-userId-23ea7f6"
   memory_limits: 512Mi
   heap: -Xmx256m -Xms256m
 
@@ -456,6 +507,9 @@ zuul:
 # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 collection-services:
+  image:
+    repository: "collection-services"
+    tag: "master-0f67ed9"
   receiptnumber-servicebased: "true"
   receipt-search-paginate: "true"
   receipt-search-defaultsize: 30
@@ -488,12 +542,21 @@ rainmaker-pgr:
   notification-allowed-status: "open,assigned,rejected,resolved"
 
 pt-services-v2:
+  image:
+    repository: "pt-services-v2"
+    tag: "master-73f249dc"
   pt-userevents-pay-link: "/citizen/otpLogin?mobileNo=$mobile&redirectTo=egov-common/pay?consumerCode=$consumerCode&tenantId=$tenantId"
 
 pt-calculator-v2:
+  image:
+    repository: "pt-calculator-v2"
+    tag: "CCSD-676-nitish-11cc510a"
   logging-level: "DEBUG"
 
 tl-services:
+  image:
+    repository: "tl-services"
+    tag: "master-73f249dc"
   heap: "-Xmx128m -Xms64m"
   memory_limits: 384Mi
   java-args: -Dspring.profiles.active=monitoring
@@ -506,6 +569,9 @@ tl-services:
   tl-search-default-limit: "100"
 
 egov-workflow-v2:
+  image:
+    repository: "egov-workflow-v2"
+    tag: "central-instance-28a606e"
   logging-level: "DEBUG"
   java-args: -Dspring.profiles.active=monitoring
   heap: "-Xmx192m -Xms192m"
@@ -515,8 +581,61 @@ egov-workflow-v2:
   pdf-link: "/download/epass?tenantId={TENANTID}&ids={UUID}"
 
 egov-hrms:
+  image:
+    repository: "egov-hrms"
+    tag: "master-bulk-user-create-update-34d5927"
   java-args: -Dspring.profiles.active=monitoring
   employee-applink: "https://egov-demo.egovernments.org/employee/user/login"
+
+egov-accesscontrol:
+  image:
+    repository: "egov-accesscontrol"
+    tag: "base-docker-upgrade-f2da0a7"
+
+gateway:
+  image:
+    repository: "gateway"
+    tag: "HCMPRE-2023-correlationIdFix-f4a3655"
+
+boundary-service:
+  image:
+    repository: "boundary-service"
+    tag: "master-persister-changes-2.0-4933943"
+
+egov-notification-mail:
+  image:
+    repository: "egov-notification-mail"
+    tag: "base-docker-upgrade-f2da0a7"
+
+egov-otp:
+  image:
+    repository: "egov-otp"
+    tag: "central-instance-28a606e"
+
+egov-pdf:
+  image:
+    repository: "egov-pdf"
+    tag: "v1.2.1-63d50132ba-12"
+
+egov-edcr:
+  image:
+    repository: "egov-edcr"
+    tag: "nitish-edcr-5ea1607e1d-68"
+
+billing-service:
+  image:
+    repository: "billing-service"
+    tag: "update_hrms_update_api-18c10bb"
+
+noc-services:
+  image:
+    repository: "noc-services"
+    tag: "master-73f249dc-amd64"
+
+tl-calculator:
+  image:
+    repository: "tl-calculator"
+    tag: "master-73f249dc"
 
 
 
