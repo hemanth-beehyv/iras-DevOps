@@ -770,7 +770,7 @@ jupyterhub:
 ### minio >>>>>>>>>>>>>>>>>>>>
 minio:
   persistence:
-    storageClass: <storage_class>
+    storageClass: "nfs-csi"
     accessMode: ReadWriteOnce
     size: 20Gi
 # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
