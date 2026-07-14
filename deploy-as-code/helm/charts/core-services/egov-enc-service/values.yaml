@@ -55,6 +55,11 @@ env: |
       configMapKeyRef:
         name: egov-config
         key: egov-state-level-tenant-id
+  - name: SPRING_DATASOURCE_DRIVER_CLASS_NAME
+    valueFrom:
+      configMapKeyRef:
+        name: egov-config
+        key: spring-datasource-driver-class-name
   - name: SECURITY_BASIC_ENABLED
     value: "false"  
   - name: MANAGEMENT_SECURITY_ENABLED
