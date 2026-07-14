@@ -26,7 +26,7 @@ replicas: "1"
 #   livenessProbePath: "/egov-enc-service/health"
 #   readinessProbePath: "/egov-enc-service/health"
 appType: "java-spring"
-tracing-enabled: true
+tracing-enabled: false
 healthChecks:
   enabled: true
   livenessProbePath: "/egov-enc-service/health"
