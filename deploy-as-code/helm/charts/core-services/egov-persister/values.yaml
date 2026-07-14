@@ -37,3 +37,8 @@ env: |
     value: "8080"
   - name: JAEGER_SAMPLER_PARAM
     value: "1"
+  - name: SPRING_DATASOURCE_DRIVER_CLASS_NAME
+    valueFrom:
+      configMapKeyRef:
+        name: egov-config
+        key: spring-datasource-driver-class-name
