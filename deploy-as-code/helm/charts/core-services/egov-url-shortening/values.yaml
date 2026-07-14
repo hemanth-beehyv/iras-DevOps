@@ -69,3 +69,8 @@ env: |
       configMapKeyRef:
         name: egov-config
         key: egov-services-fqdn-name
+  - name: SPRING_DATASOURCE_DRIVER_CLASS_NAME
+    valueFrom:
+      configMapKeyRef:
+        name: egov-config
+        key: spring-datasource-driver-class-name

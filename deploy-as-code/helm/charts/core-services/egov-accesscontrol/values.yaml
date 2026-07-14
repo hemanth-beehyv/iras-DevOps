@@ -39,6 +39,11 @@ env: |
         key: egov-mdms-service
   - name: JAVA_ARGS
     value: {{ index .Values "java-args" | quote }}
+  - name: SPRING_DATASOURCE_DRIVER_CLASS_NAME
+    valueFrom:
+      configMapKeyRef:
+        name: egov-config
+        key: spring-datasource-driver-class-name
 
   - name: SECURITY_BASIC_ENABLED
     value: "false"  

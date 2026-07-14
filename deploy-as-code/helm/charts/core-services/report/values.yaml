@@ -62,7 +62,12 @@ env: |
         name: egov-config
         key: egov-state-level-tenant-id
   - name: KAFKA_TOPIC_AUDIT
-    value: "enc-report-audit-data"         
+    value: "enc-report-audit-data"
+  - name: SPRING_DATASOURCE_DRIVER_CLASS_NAME
+    valueFrom:
+      configMapKeyRef:
+        name: egov-config
+        key: spring-datasource-driver-class-name
 
   {{- if index .Values "cluster-configs" "configmaps" "egov-config" "data" "db-read-url" }}
   - name: SPRING_DATASOURCE_URL
