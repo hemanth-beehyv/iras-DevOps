@@ -39,8 +39,8 @@ cluster-configs:
       namespace: [ health ]
 
   secrets:
-    db: 
-      namespace: egov
+    db:
+      namespace: [ egov, urban ]
       name: db
 
     egov-notification-sms:
