@@ -11,7 +11,7 @@ cluster-configs:
       cert-issuer: letsencrypt-prod
     configmaps:
         egov-config:
-            namespace: [ egov, monitoring ]
+            namespace: [ egov, monitoring, urban ]
             data:
                 db-host: "postgres.egov:5432" ## Add db-host name eg: egov-demo.database.azure.co
                 db-name: "iras_dev" ## Add db-name
