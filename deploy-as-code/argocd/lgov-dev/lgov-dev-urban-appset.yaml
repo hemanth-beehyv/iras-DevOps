@@ -1,0 +1,61 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: lgov-dev-urban
+  namespace: argocd
+spec:
+  generators:
+    - list:
+        elements:
+          - service: bpa-calculator
+          - service: bpa-services
+          - service: noc-services
+          - service: tl-calculator
+          - service: tl-services
+          - service: pt-calculator-v2
+          - service: pt-services-v2
+  template:
+    metadata:
+      name: "{{service}}"
+    spec:
+      project: default
+      sources:
+        - repoURL: https://github.com/hemanth-beehyv/iras-DevOps
+          targetRevision: master
+          path: "deploy-as-code/helm/charts/urban/{{service}}"
+          helm:
+            # Chart defaults from the service's own values.yaml, overridden by
+            # the environment values below (later files win). The secrets file
+            # is SOPS/age-encrypted and decrypted in-place by the repo-server's
+            # helm-secrets plugin via the secrets+age-import scheme.
+            # https://github.com/jkroepke/helm-secrets/wiki/ArgoCD-Integration
+            valueFiles:
+              - values.yaml
+              - ../../../environments/lgov-dev.yaml
+              # secrets+age-import://<key-volume-mount>/<key-name>.txt?<relative/path/to/the/encrypted/secrets.yaml>
+              - secrets://../../../environments/lgov-dev-secrets.yaml
+        - repoURL: https://github.com/hemanth-beehyv/iras-DevOps
+          targetRevision: master
+          ref: values
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: egov
+      ignoreDifferences:
+        - group: apps
+          kind: Deployment
+          jsonPointers:
+            - /spec/replicas
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
+          - ApplyOutOfSyncOnly=true
+          - ServerSideApply=true
+        retry:
+          limit: 100
+          backoff:
+            duration: 5s
+            factor: 2
+            maxDuration: 3m0s
